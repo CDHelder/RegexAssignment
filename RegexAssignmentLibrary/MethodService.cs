@@ -9,6 +9,43 @@ namespace RegexAssignmentLibrary
 {
     public static class MethodService
     {
+        public static bool StringComparisonRecursionExtraCharacters(string input, string compareString, int lastIndex)
+        {
+            if (input.Length != compareString.Length)
+                return false;
+
+
+            char starChar = '\0';
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i + 1] == '*')
+                {
+                    starChar = input[i];
+                }
+
+                if (starChar != '\0')
+                {
+                    if(input[i] == '*' || input[i] == starChar)
+                    {
+                        //TODO: starchar afhandeling
+                    }
+                }
+                else
+                {
+                    if (input[i] != compareString[i])
+                    {
+                        if (input[i] == '.')
+                        {
+                            continue;
+                        }
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         public static bool StringComparisonRecursion(string input, string compareString, int lastindex)
         {
             if (lastindex == 0)
