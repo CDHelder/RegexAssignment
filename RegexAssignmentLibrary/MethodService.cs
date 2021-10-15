@@ -46,31 +46,26 @@ namespace RegexAssignmentLibrary
             return true;
         }
 
-        public static bool StringComparisonRecursion(string input, string compareString, int lastindex)
+        public static bool StringComparisonRecursion(string input, string compareString, int index)
         {
-            if (lastindex == 0)
+            if (index == 0)
             {
                 if (input.Length != compareString.Length)
                     return false;
             }
-
-            int index = lastindex;
+            
             if (index > input.Length - 1)
             {
                 return true;
             }
+
             else if (input[index] != compareString[index])
             {
                 return false;
-            }
+            }            
 
-            index++;
-
-            if (StringComparisonRecursion(input, compareString, index))
-            {
-                return true;
-            }
-            return false;
+            return StringComparisonRecursion(input, compareString, index + 1);
+            
         }
 
         public static bool StringComparisonSimplified(string input, string compareString)
