@@ -9,22 +9,10 @@ namespace RegexAssignmentConsole
         static void Main(string[] args)
         {
 
-            var result = MethodService.StringComparisonRecursion("fiets", "fiets", 0);
+            var result = MethodService.StringCompareExtraCharacters("fiets", "fiets");
             Console.WriteLine(result);
 
             Console.ReadLine();
-        }
-
-        private static void ShowResults(CSharpFunctionalExtensions.Result<string> result)
-        {
-            if (result.IsFailure)
-            {
-                Console.WriteLine(result.Error);
-            }
-            else
-            {
-                Console.WriteLine(result.Value);
-            }
         }
     }
 }

@@ -9,6 +9,108 @@ namespace RegexAssignmentLibrary
 {
     public static class MethodService
     {
+        public static bool StringComparisonRecursionExtraCharacters(string input, string compareString, int inputIndex, int compareIndex, char starChar)
+        {
+            if (inputIndex == 0)
+            {
+                if (input == ".*")
+                    return true;
+                if (input.Length != compareString.Length && !input.Contains('*'))
+                    return false;
+            }
+            
+
+            if (inputIndex > input.Length - 1 && compareIndex > compareString.Length - 1)
+                return true;
+            if (input[inputIndex] != compareString[inputIndex] && starChar == '\0')
+                return false;
+            if (starChar != '\0')
+                if (input[inputIndex] != starChar)
+                    return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex + 2, compareIndex + 1, '\0');
+            if (input[inputIndex] == '.')
+                return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex + 1, compareIndex + 1, starChar);
+            if (input[inputIndex + 1] == '*')
+                return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex, compareIndex + 1, input[inputIndex]);
+
+            return false;
+        }
+
+        public static bool StringCompareExtraCharacters(string input, string compareString)
+        {
+            if (input == ".*")
+                return true;
+            else if (!input.Contains('*'))
+                if (input.Length != compareString.Length)
+                    return false;
+
+            int inputIndex = 0;
+            char starChar = '\0';
+            for (int i = 0; i < compareString.Length; i++)
+            {
+                if (input[inputIndex] == '.')
+                {
+                    inputIndex++;
+                    continue;
+                }
+                else if (inputIndex + 1 <= input.Length - 1)
+                {
+                    if (input[inputIndex + 1] == '*')
+                    {
+                        starChar = input[inputIndex];
+                        inputIndex++;
+                    }
+                }
+
+                if (starChar != '\0')
+                {
+                    if (compareString[i] != starChar)
+                    {
+                        if (inputIndex + 1 <= input.Length - 1)
+                        {
+                            if (compareString[i] != input[inputIndex + 1])
+                            {
+                                if (input[inputIndex + 1] == '.')
+                                {
+                                    return true;
+                                }
+                                return false;
+                            }
+                            else if (i + 1 > compareString.Length - 1 || inputIndex + 2 > input.Length - 1)
+                            {
+                                if (compareString[i] != input[inputIndex + 1])
+                                {
+                                    return false;
+                                }
+                            }
+
+                            if (inputIndex + 2 > input.Length - 1)
+                            {
+                                if (i + 1 <= compareString.Length - 1)
+                                {
+                                    return false;
+                                }
+                            }
+                            starChar = '\0';
+                            inputIndex += 2;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (compareString[i] != input[inputIndex])
+                        return false;
+
+                    inputIndex++;
+                }
+            }
+
+            return true;
+        }
+
         public static bool StringComparisonRecursionExtraCharacters(string input, string compareString, int lastIndex)
         {
             if (input.Length != compareString.Length)
@@ -25,7 +127,7 @@ namespace RegexAssignmentLibrary
 
                 if (starChar != '\0')
                 {
-                    if(input[i] == '*' || input[i] == starChar)
+                    if (input[i] == '*' || input[i] == starChar)
                     {
                         //TODO: starchar afhandeling
                     }
@@ -53,7 +155,7 @@ namespace RegexAssignmentLibrary
                 if (input.Length != compareString.Length)
                     return false;
             }
-            
+
             if (index > input.Length - 1)
             {
                 return true;
@@ -62,10 +164,9 @@ namespace RegexAssignmentLibrary
             else if (input[index] != compareString[index])
             {
                 return false;
-            }            
+            }
 
             return StringComparisonRecursion(input, compareString, index + 1);
-            
         }
 
         public static bool StringComparisonSimplified(string input, string compareString)
