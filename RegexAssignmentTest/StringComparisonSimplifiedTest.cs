@@ -55,7 +55,7 @@ namespace RegexAssignmentTest
 
         public void Test3(string input, string compare, bool expectedResult)
         {
-            var result = MethodService.StringComparisonRecursionExtraCharacters(input, compare, 0 , 0, '\0');
+            var result = MethodService.StringComparisonRecursionExtraCharacters(input, compare, 0 , 0);
             Assert.Equal(expectedResult, result);
         }
     }

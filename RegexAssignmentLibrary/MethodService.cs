@@ -9,28 +9,35 @@ namespace RegexAssignmentLibrary
 {
     public static class MethodService
     {
-        public static bool StringComparisonRecursionExtraCharacters(string input, string compareString, int inputIndex, int compareIndex, char starChar)
+        public static bool StringComparisonRecursionExtraCharacters(string input, string compareString, int x, int y)
         {
-            if (inputIndex == 0)
+            if (x == 0 && y == 0)
             {
                 if (input == ".*")
                     return true;
                 if (input.Length != compareString.Length && !input.Contains('*'))
                     return false;
             }
-            
 
-            if (inputIndex > input.Length - 1 && compareIndex > compareString.Length - 1)
-                return true;
-            if (input[inputIndex] != compareString[inputIndex] && starChar == '\0')
-                return false;
-            if (starChar != '\0')
-                if (input[inputIndex] != starChar)
-                    return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex + 2, compareIndex + 1, '\0');
-            if (input[inputIndex] == '.')
-                return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex + 1, compareIndex + 1, starChar);
-            if (input[inputIndex + 1] == '*')
-                return StringComparisonRecursionExtraCharacters(input, compareString, inputIndex, compareIndex + 1, input[inputIndex]);
+            //base case
+            if (x >= input.Length)
+                return y >= compareString.Length;
+
+            if (x + 1 < input.Length && input[x + 1] == '*')
+            {
+                if (y + 1 <= compareString.Length && (input[x] == compareString[y] || input[x] == '.'))
+                {
+                    return StringComparisonRecursionExtraCharacters(input, compareString, x, y + 1);
+                }
+                else if (y + 1 > compareString.Length && x + 2 > input.Length)
+                    return true;
+
+                return StringComparisonRecursionExtraCharacters(input, compareString, x + 2, y);
+            }
+            else if (y < compareString.Length && (input[x] == compareString[y] || input[x] == '.'))
+            {
+                return StringComparisonRecursionExtraCharacters(input, compareString, x + 1, y + 1);
+            }
 
             return false;
         }
